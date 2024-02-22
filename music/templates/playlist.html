@@ -1,0 +1,73 @@
+{% extends 'layout.html' %} {% block content %}
+
+<div>
+    <h3> Music Library </h3>
+    <p> This is our home page. </p>
+    <div>
+        {% if 'user_name' in session %}
+        <h3> Hello, {{ session['user_name'] }} </h3>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <div>
+            <table>
+                <tr>
+                    {%if playlist.length != 0 %}
+                    <a href={{ url_for('playlists_bp.view_favourite', user_name = session['user_name']) }}> View favourites only </a>
+                    <th> Title </th>
+                    <th> Artist </th>
+                    <th> Album </th>
+                    {% endif %}
+                </tr>
+                {% for track in playlist %}
+                <tr>
+                    <td>{{ track.title }}</td>
+                    <td>{{ track.artist.full_name}}</td>
+                    <td>{{ track.album.title }}</td>
+                    <td>
+                        <a href={{ url_for('tracks_bp.view_track', track_id = track.track_id) }}> More info </a>
+                    </td>
+                    <td>
+                        <a href={{ url_for('playlists_bp.remove_from_playlist', track_id = track.track_id) }}> Remove from playlist </a>
+                        {% if track not in favourite %}
+                            <button class="btn-general" onclick="location.href='{{ url_for('playlists_bp.add_to_favourite', track_id = track.track_id) }}'">&#9825;</button>
+                        {% else %}
+                            <button class="btn-general" onclick="location.href='{{ url_for('playlists_bp.remove_from_favourite', track_id = track.track_id, view = 0) }}'">&#128153;</button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            <table>
+                <tr>
+                    <td> <b>Number of Likes:</b> {{ user.playlist.liked_by|length }}</td>
+                    <td> &nbsp;&nbsp; &nbsp;&nbsp; </td>
+                    {% if user.playlist.liked_by|length > 0 %}
+                        <td> Liked by: </td>
+                        {% for i in range(user.playlist.liked_by|length) %}
+                            {% if i != user.playlist.liked_by|length -1 %}
+                                <td> {{user.playlist.liked_by[i].user_name}}, </td>
+                            {% else %}
+                                <td> {{user.playlist.liked_by[i].user_name}} </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </tr>
+    
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+

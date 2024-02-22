@@ -1,0 +1,25 @@
+{% extends 'layout.html' %} {% block content %}
+
+<div>
+  <h3> Customise Your Own Music Library </h3>
+  <div> This is our home page. </div>
+  <div>
+  
+    {% if 'user_name' in session %}
+      <h3> Hello, {{ session['user_name'] }} </h3>
+      <h3> User Id: {{ session['user_id'] }} </h3>
+      <a href={{ url_for('playlists_bp.view_playlist', user_name = session['user_name']) }}> Your Playlist </a>
+      {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+      {% endwith %}
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'layout.html' %} {% block content %}
+
+<table>
+        <tr>
+            {%if favourite.length != 0 %}
+            <a href={{ url_for('playlists_bp.view_playlist', user_name = session['user_name']) }}> Back to Playlist </a>
+            <th> Title </th>
+            <th> Artist </th>
+            <th> Album </th>
+            {% endif %}
+        </tr>
+        {% for track in favourite %}
+        <tr>
+            <td>{{ track.title }}</td>
+            <td>{{ track.artist.full_name}}</td>
+            <td>{{ track.album.title }}</td>
+            <td>
+                <a href={{ url_for('tracks_bp.view_track', track_id = track.track_id) }}> More info </a>
+
+                {% if track not in favourite %}
+                    <button class="btn-general" onclick="location.href='{{ url_for('playlists_bp.add_to_favourite', track_id = track.track_id) }}'">&#9825;</button>
+                {% else %}
+                    <button class="btn-general" onclick="location.href='{{ url_for('playlists_bp.remove_from_favourite', track_id = track.track_id, view = 1) }}'">&#128153;</button>
+                {% endif %}
+            </td>
+
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

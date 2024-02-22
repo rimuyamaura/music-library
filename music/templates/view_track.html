@@ -1,0 +1,40 @@
+{% extends 'layout.html' %} {% block content %}
+
+<div>
+    <h2>{{ title }}</h2>
+    <p> Artist: {{ artist }} </p>
+    <p> Track Duration: <b>{{ track_duration }}</b></p>
+    <tr>
+        <td>Genres: </td>
+        {% for genre in genres %}
+        <td> {{ genre.name }}, </td>
+        {% endfor %}
+    </tr>
+    
+    <p> Album: {{ album }}</p>
+    <p> Track URL: 
+        <a href={{ url }}> {{ url }} </a> 
+    </p>
+
+    {% if track not in current_user.playlist %}
+    <td>
+        <button type='button' onclick="location.href='{{ url_for('playlists_bp.add_to_playlist', track_id=track_id) }}'"; return False;>Add to playlist</button>
+    </td>
+    {% else %}
+        <button class="btn-general-disabled" disabled>Add to playlist</button>
+    {% endif %}
+
+    <div style="clear:both">
+        {% for review in all_reviews %}
+            <p>REVIEW: {{review.review_text}}, RATING: {{review.rating}}, BY {{user_review[track_id]}}, {{review.timestamp}}</p>
+        {% endfor %}
+    </div>
+
+
+
+    <!-- Add list of reviews here later? -->
+    <a href={{ url_for('reviews_bp.review_on_track', track_id = track_id) }}> Add Review </a>
+
+</div>
+
+{% endblock %}

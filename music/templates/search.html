@@ -1,0 +1,43 @@
+{% extends 'layout.html' %} {% block content %}
+<div>
+    <form method="POST" action="{{ handler_url }}">
+        {{ form.csrf_token }}
+        <div> Search by: {{ form.select }} </div>
+        <div> {{ form.search }} {{ form.submit }} </div>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </form>
+</div>
+    {% if 'user_name' in session %}
+    <div>
+        {% if interests|length > 0 %}
+        <th> You might also like: </th>
+        {% endif %}
+    </div>
+    {% for track in interests %}
+    <table>
+    <tr>
+        <th> Title </th>
+        <th> Artist </th>
+        <th> Album </th>
+    </tr>
+        <tr>
+            <td>{{ track.title }}</td>
+            <td>{{ track.artist.full_name}}</td>
+            <td>{{ track.album.title }}</td>
+            <td>
+                <a href={{ url_for('tracks_bp.view_track', track_id=track.track_id) }}> More info </a>
+            </td>
+        </tr>
+    <br>
+    </table>
+    {% endfor %}
+    {% endif %}
+{% endblock %}

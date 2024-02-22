@@ -1,0 +1,32 @@
+h1 {
+    border-bottom-color: black;
+    border-bottom-style: solid;
+}
+h3
+{
+    font-weight: bold
+
+    color: rgb(50, 70, 62);
+    text-transform: uppercase;
+}
+
+.subtitle
+{
+    color:black;
+    text-transform: uppercase;
+}
+
+.line
+{
+    border-bottom-color: black;
+    border-bottom-style: solid;
+}
+
+
+a
+{
+    font-weight: bold
+
+    color: rgb(50, 70, 62);
+    text-transform: uppercase;
+}

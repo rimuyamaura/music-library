@@ -1,0 +1,69 @@
+{% extends 'layout.html' %} {% block content %}
+    <div>
+        <table>
+            <h3> ID:{{ user.user_id }} | {{ user.user_name }}</h3>
+            <tr>
+                <td> <b>Number of Likes:</b> {{ user.playlist.liked_by|length }}</td>
+                <td >
+                    <a href={{ url_for('friends_bp.like', friend_id=user.user_id) }}> &#10084; </a>
+                </td>
+                <td> &nbsp;&nbsp; &nbsp;&nbsp; </td>
+                {% if user.playlist.liked_by|length > 0 %}
+                    <td> Liked by: </td>
+                    {% for i in range(user.playlist.liked_by|length) %}
+                        {% if i != user.playlist.liked_by|length -1 %}
+                            <td> {{user.playlist.liked_by[i].user_name}}, </td>
+                        {% else %}
+                            <td> {{user.playlist.liked_by[i].user_name}} </td>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </tr>
+
+        </table>
+        <table>
+
+            {%if user.playlist.list_of_tracks|length != 0 %}
+            <tr>
+                <th> Title </th>
+                <th> Artist </th>
+                <th> Album </th>
+            </tr>
+            {% endif %}
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class=flashes>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            {% for track in user.playlist.list_of_tracks %}
+                <tr>
+
+                    <td>{{ track.title }}</td>
+                    <td>{{ track.artist.full_name}}</td>
+                    <td>{{ track.album.title }}</td>
+
+                    <td>
+                        <a href={{ url_for('tracks_bp.view_track', track_id = track.track_id) }}> More info </a>
+                    </td>
+                    <td>
+                        <a href={{ url_for('playlists_bp.add_to_playlist_from_friend', track_id=track.track_id, friend_name=user.user_name) }}> Add to playlist </a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            {% if user.playlist.list_of_tracks|length == 0 %}
+                <tr>
+                    <td align ="center" colspan="4">User has no songs in playlist! </td>
+                </tr>
+            {% endif %}
+        </table>
+        <br>
+
+    </div>
+{% endblock %}
