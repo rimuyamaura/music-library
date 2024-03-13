@@ -1,3 +1,5 @@
+# Created by Xiaoyu Han and Rimu Yamaura
+
 ## Installation
 
 Create a .env file with the following properties
